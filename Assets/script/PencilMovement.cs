@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class PencilMovement : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D Pencilrb;
+    [SerializeField]private Rigidbody2D Pencilrb;
     [SerializeField]private float moveSpeed = 5f;
     [SerializeField] private float acceleration = 10f;
 
     public Vector2 Movementvector { get; private set; }
+    
 
 
 
@@ -18,7 +19,7 @@ public class PencilMovement : MonoBehaviour
 
     void Update()
     {
-        Movementvector = MovementManager.Instance.GetMovementVectorNormalized();
+        Movementvector = MovementManager.Instance.GetPencilMovement();
     }
     // Update is called once per frame
     void FixedUpdate()
