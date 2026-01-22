@@ -37,5 +37,27 @@ public class MovementManager : MonoBehaviour
         playerInputActions.Player.Disable();
         playerInputActions.Eraser.Disable();
     }
+    public bool GetCurrentTrailType(out TrailType trailType)
+    {
+        if(playerInputActions.Player.SwitchCircuitTrail.triggered)
+        {
+            trailType = TrailType.Circuit;
+            Debug.Log("Trail is Circuit Trail");
+            return true;
+        }
+        else if (playerInputActions.Player.SwitchDefaultTrail.triggered)
+        {
+            trailType = TrailType.Default;
+            Debug.Log("Trail is Default Trail");
+            return true;
+        }
+         else if (playerInputActions.Player.SwitchTrapTrail.triggered)
+        {
+            trailType = TrailType.Trap;
+            Debug.Log("Trail is chosen as Trap Trail");
+            return true;
+        }
+        trailType = TrailType.Default;
+        return false;
+    }  
 }
-    

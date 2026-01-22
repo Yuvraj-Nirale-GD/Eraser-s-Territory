@@ -141,7 +141,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""f1ba0d36-48eb-4cd5-b651-1c94a6531f70"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -169,6 +169,33 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""type"": ""Button"",
                     ""id"": ""641cd816-40e6-41b4-8c3d-04687c349290"",
                     ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchDefaultTrail"",
+                    ""type"": ""Button"",
+                    ""id"": ""91917d54-577a-4695-a30c-f043e2544e6a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchCircuitTrail"",
+                    ""type"": ""Button"",
+                    ""id"": ""408e8cbe-63a4-4e7d-b749-84ba07a7bc4c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchTrapTrail"",
+                    ""type"": ""Button"",
+                    ""id"": ""65496211-ff29-4489-abe0-aefdb2d67545"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -513,6 +540,39 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4b09e999-f55b-49f5-8dbb-39f2d551c195"",
+                    ""path"": ""<Keyboard>/numpad2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchCircuitTrail"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a0ccfd24-5141-4cd4-b75a-b105ddda03df"",
+                    ""path"": ""<Keyboard>/numpad3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchTrapTrail"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""13c1e6e3-3bc6-4eef-98a3-d79541e4a27f"",
+                    ""path"": ""<Keyboard>/numpad1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchDefaultTrail"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1181,6 +1241,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Previous = m_Player.FindAction("Previous", throwIfNotFound: true);
         m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
+        m_Player_SwitchDefaultTrail = m_Player.FindAction("SwitchDefaultTrail", throwIfNotFound: true);
+        m_Player_SwitchCircuitTrail = m_Player.FindAction("SwitchCircuitTrail", throwIfNotFound: true);
+        m_Player_SwitchTrapTrail = m_Player.FindAction("SwitchTrapTrail", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1287,6 +1350,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Previous;
     private readonly InputAction m_Player_Next;
     private readonly InputAction m_Player_Sprint;
+    private readonly InputAction m_Player_SwitchDefaultTrail;
+    private readonly InputAction m_Player_SwitchCircuitTrail;
+    private readonly InputAction m_Player_SwitchTrapTrail;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1334,6 +1400,18 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Sprint".
         /// </summary>
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/SwitchDefaultTrail".
+        /// </summary>
+        public InputAction @SwitchDefaultTrail => m_Wrapper.m_Player_SwitchDefaultTrail;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/SwitchCircuitTrail".
+        /// </summary>
+        public InputAction @SwitchCircuitTrail => m_Wrapper.m_Player_SwitchCircuitTrail;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/SwitchTrapTrail".
+        /// </summary>
+        public InputAction @SwitchTrapTrail => m_Wrapper.m_Player_SwitchTrapTrail;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1387,6 +1465,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
+            @SwitchDefaultTrail.started += instance.OnSwitchDefaultTrail;
+            @SwitchDefaultTrail.performed += instance.OnSwitchDefaultTrail;
+            @SwitchDefaultTrail.canceled += instance.OnSwitchDefaultTrail;
+            @SwitchCircuitTrail.started += instance.OnSwitchCircuitTrail;
+            @SwitchCircuitTrail.performed += instance.OnSwitchCircuitTrail;
+            @SwitchCircuitTrail.canceled += instance.OnSwitchCircuitTrail;
+            @SwitchTrapTrail.started += instance.OnSwitchTrapTrail;
+            @SwitchTrapTrail.performed += instance.OnSwitchTrapTrail;
+            @SwitchTrapTrail.canceled += instance.OnSwitchTrapTrail;
         }
 
         /// <summary>
@@ -1425,6 +1512,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
+            @SwitchDefaultTrail.started -= instance.OnSwitchDefaultTrail;
+            @SwitchDefaultTrail.performed -= instance.OnSwitchDefaultTrail;
+            @SwitchDefaultTrail.canceled -= instance.OnSwitchDefaultTrail;
+            @SwitchCircuitTrail.started -= instance.OnSwitchCircuitTrail;
+            @SwitchCircuitTrail.performed -= instance.OnSwitchCircuitTrail;
+            @SwitchCircuitTrail.canceled -= instance.OnSwitchCircuitTrail;
+            @SwitchTrapTrail.started -= instance.OnSwitchTrapTrail;
+            @SwitchTrapTrail.performed -= instance.OnSwitchTrapTrail;
+            @SwitchTrapTrail.canceled -= instance.OnSwitchTrapTrail;
         }
 
         /// <summary>
@@ -1884,6 +1980,27 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSprint(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SwitchDefaultTrail" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSwitchDefaultTrail(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SwitchCircuitTrail" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSwitchCircuitTrail(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SwitchTrapTrail" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSwitchTrapTrail(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
