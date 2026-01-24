@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,40 +7,29 @@ public class PencilTrail : MonoBehaviour
 {
 
 
-    [SerializeField] private LineRenderer linerender;
+
     [SerializeField] private float TrailPointDist = 0.3f;
     [SerializeField] private int MaxTrailPoints = 100;
     [SerializeField] private Rigidbody2D Pencilrb;
     TrailType currentTrailType = TrailType.Default;
 
-    public void SetTrailType(TrailType TrailType)
-    {
-        currentTrailType = TrailType;
-        switch (currentTrailType)
-        {
-            case TrailType.Default:
-                linerender.startColor = Color.white;
-                linerender.endColor = Color.white;
-                break;
-            case TrailType.Circuit:
-                linerender.startColor = Color.cyan;
-                linerender.endColor = Color.cyan;
-                break;
-            case TrailType.Trap:
-                linerender.startColor = Color.red;
-                linerender.endColor = Color.red;
-                break;
-        }
-    }
+    [SerializeField] private TrailSegment trailSegmentPrefab;
 
-    private List<TrailPoint> trailPoints = new List<TrailPoint>(); // creating a list of datatype TrailPoint(struct) to store trail points
+    private List<TrailSegment> Segments = new List<TrailSegment>(); // creating a list of datatype TrailSegment to store trail segments
+    private TrailSegment currentSegment;
     private Vector3 CurrentPosition;
 
-    void Start()
+
+    void OnEnable()
     {
-
-        linerender.positionCount = 0;// Initialize line renderer with 0 points
-
+        TrailRegister.TrailRegisterInstance.Register(this);
+    }
+    void OnDisable()
+    {
+        if (TrailRegister.TrailRegisterInstance != null)
+        {
+            TrailRegister.TrailRegisterInstance.Unregister(this);
+        }
     }
     void Update()
     {
@@ -51,64 +41,85 @@ public class PencilTrail : MonoBehaviour
         {
             return;
         }
+
         CurrentPosition = transform.position;
-       
-            //     trailPoints.Add(CurrentPosition);
 
-
-            //     linerender.positionCount = trailPoints.Count;
-            //     linerender.SetPositions(trailPoints.ToArray());
-            
-        if (trailPoints.Count == 0 || (trailPoints[^1].position - CurrentPosition).sqrMagnitude >= TrailPointDist 
-        * TrailPointDist)
-        { 
-            trailPoints.Add(new TrailPoint
-            {
-                position = CurrentPosition,
-                trailType = currentTrailType
-            });
-        }                       // adding new TrailPoint struct to the list
-
-        if (trailPoints.Count > MaxTrailPoints)
+        if (currentSegment == null)
         {
-            trailPoints.RemoveAt(0);
+            NewSegment(currentTrailType);
         }
 
-        linerender.positionCount = trailPoints.Count;
-        linerender.SetPositions(trailPoints.ConvertAll(tp => tp.position).ToArray());// this line converts TrailPoint list to Vector3 array
 
+        if (currentSegment.points.Count == 0 || (currentSegment.points[^1] - CurrentPosition).sqrMagnitude >= TrailPointDist
+        * TrailPointDist)
+        {
+
+
+            currentSegment.points.Add(CurrentPosition);
+
+            if (currentSegment.points.Count > MaxTrailPoints)
+            {
+                currentSegment.points.RemoveAt(0);
+            }
+
+            currentSegment.lineRenderer.positionCount = currentSegment.points.Count;
+            currentSegment.lineRenderer.SetPositions(currentSegment.points.ToArray());
+        }
 
     }
     public void EraseTrail(Vector3 ErasePos, float EraseRadius, bool canErase)
     {
-        if (trailPoints.Count == 0)
+        if (currentSegment == null || currentSegment.points.Count == 0)
         {
-            Debug.Log("0 index");
             return;
         }
-        float r2 = EraseRadius * EraseRadius;
-
-        for (int i = trailPoints.Count - 1; i >= 0; i--)
+        for (int i = Segments.Count - 1; i >= 0; i--)
         {
-
-            if ((trailPoints[i].position - ErasePos).sqrMagnitude <= r2) // checking squared distance for performance and comparing with squared radius
+            var segment = Segments[i];
             {
-
-                if (trailPoints[i].trailType == TrailType.Circuit && !canErase) // cheking if the trail point is of type Circuit and if erasing is not allowed
+                if (segment.EraseSegment(ErasePos, EraseRadius, canErase, out TrailSegment left, out TrailSegment right))
                 {
-                    Debug.Log("Cannot erase Circuit trail");
-                    continue;
+                    Segments.RemoveAt(i);
+                    if (left != null)
+                    {
+                        Segments.Add(left);
+                    }
+                    if (right != null)
+                    {
+                        Segments.Add(right);
+                    }
+            
+                
+                    break;
                 }
-                trailPoints.RemoveAt(i);
-                Debug.Log("Position of errased point: " + ErasePos);
-                break;
-
             }
         }
-        
-        linerender.positionCount = trailPoints.Count;
-        linerender.SetPositions(trailPoints.ConvertAll(p => p.position).ToArray());
+    }
+    public void SetTrailType(TrailType TrailType)
+    {
+        if (currentSegment != null && currentSegment.trailType == TrailType)
+        {
+            return;
+        }
+        currentTrailType = TrailType;
+        NewSegment(TrailType);
 
+    }
+    void NewSegment(TrailType trailType)
+    {
+        currentSegment = Instantiate(trailSegmentPrefab, transform);
+        currentSegment.trailType = trailType;
+
+        Color color = trailType switch
+        {
+            TrailType.Default => Color.white,
+            TrailType.Circuit => Color.cyan,
+            TrailType.Trap => Color.red,
+            _ => Color.white
+        };
+        currentSegment.lineRenderer.startColor = color;
+        currentSegment.lineRenderer.endColor = color;
+        Segments.Add(currentSegment);
     }
 
 }
