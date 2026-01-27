@@ -69,10 +69,10 @@ public class PencilTrail : MonoBehaviour
     }
     public void EraseTrail(Vector3 ErasePos, float EraseRadius, bool canErase)
     {
-        if (currentSegment == null || currentSegment.points.Count == 0)
-        {
-            return;
-        }
+        // if (currentSegment == null || currentSegment.points.Count == 0)
+        // {
+        //     return;
+        // }
         for (int i = Segments.Count - 1; i >= 0; i--)
         {
             var segment = Segments[i];

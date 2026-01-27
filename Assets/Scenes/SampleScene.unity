@@ -129,7 +129,6 @@ GameObject:
   m_Component:
   - component: {fileID: 197135484}
   - component: {fileID: 197135483}
-  - component: {fileID: 197135485}
   m_Layer: 0
   m_Name: MovmentManager
   m_TagString: Untagged
@@ -164,18 +163,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &197135485
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 197135482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 916dfea4fff3db74b847b2c60844a03a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TrailRegister
 --- !u!1001 &262605249
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -370,6 +357,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1163901070
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1163901072}
+  - component: {fileID: 1163901071}
+  m_Layer: 0
+  m_Name: trailRegister
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1163901071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163901070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 916dfea4fff3db74b847b2c60844a03a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrailRegister
+--- !u!4 &1163901072
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163901070}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.3253, y: 0.68596, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1891749273 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8500163519230157233, guid: 39186fbf10d94884fa44362b1bacf5a7, type: 3}
@@ -512,3 +543,4 @@ SceneRoots:
   - {fileID: 197135484}
   - {fileID: 5250886092705197402}
   - {fileID: 262605249}
+  - {fileID: 1163901072}

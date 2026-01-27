@@ -11,6 +11,7 @@ public class TrailSegment : MonoBehaviour
     {
         left = null;
         right = null;
+        float r2 = eraseRadius * eraseRadius;
 
         if (trailType == TrailType.Circuit && !canErase)
         {
@@ -19,7 +20,8 @@ public class TrailSegment : MonoBehaviour
         int hitIndex = -1;
         for (int i = points.Count - 1; i >= 0; i--)
         {
-            if ((points[i] - erasePos).sqrMagnitude <= eraseRadius * eraseRadius)
+            if (i > 0 && NearSegment(points[i - 1], points[i], erasePos, r2))
+
             {
                 hitIndex = i;
                 break;
@@ -51,6 +53,15 @@ public class TrailSegment : MonoBehaviour
         }
         Destroy(gameObject);
         return true;
+    }
+    bool NearSegment(Vector3 a, Vector3 b, Vector3 e, float r2)
+    {
+        Vector3 ab = b - a;
+        Vector3 ae = e - a;
+        float t = Vector3.Dot(ae, ab) / ab.sqrMagnitude;
+        t = Mathf.Clamp01(t);
+        Vector3 closestPoint = a + t * ab;
+        return (closestPoint - e).sqrMagnitude <= r2;   
     }
     public void Rebuild()
     {
