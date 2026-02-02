@@ -3,12 +3,12 @@ using UnityEngine.InputSystem;
 
 public class MovementManager : MonoBehaviour
 {
-    private InputSystem_Actions playerInputActions ;
-    public static MovementManager Instance{get; private set;}
-    
+    private InputSystem_Actions playerInputActions;
+    public static MovementManager Instance { get; private set; }
+
     private void Awake()
     {
-        if ( Instance == null)
+        if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -17,7 +17,7 @@ public class MovementManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    
+
         playerInputActions = new InputSystem_Actions();
         playerInputActions.Player.Enable();
         playerInputActions.Eraser.Enable();
@@ -39,7 +39,7 @@ public class MovementManager : MonoBehaviour
     }
     public bool GetCurrentTrailType(out TrailType trailType)
     {
-        if(playerInputActions.Player.SwitchCircuitTrail.triggered)
+        if (playerInputActions.Player.SwitchCircuitTrail.triggered)
         {
             trailType = TrailType.Circuit;
             Debug.Log("Trail is Circuit Trail");
@@ -51,7 +51,7 @@ public class MovementManager : MonoBehaviour
             Debug.Log("Trail is Default Trail");
             return true;
         }
-         else if (playerInputActions.Player.SwitchTrapTrail.triggered)
+        else if (playerInputActions.Player.SwitchTrapTrail.triggered)
         {
             trailType = TrailType.Trap;
             Debug.Log("Trail is chosen as Trap Trail");
@@ -59,5 +59,5 @@ public class MovementManager : MonoBehaviour
         }
         trailType = TrailType.Default;
         return false;
-    }  
+    }
 }

@@ -20,9 +20,13 @@ public class PencilTrail : MonoBehaviour
     private Vector3 CurrentPosition;
 
 
-    void OnEnable()
+
+    void Start()
     {
-        TrailRegister.TrailRegisterInstance.Register(this);
+        if (TrailRegister.TrailRegisterInstance != null)
+        {
+            TrailRegister.TrailRegisterInstance.Register(this);
+        }
     }
     void OnDisable()
     {
@@ -48,7 +52,15 @@ public class PencilTrail : MonoBehaviour
         {
             NewSegment(currentTrailType);
         }
-
+        Vector2Int cell = CircuitGrid.CircuitGridInstance.WorldToCell(CurrentPosition);
+        if(currentTrailType == TrailType.Circuit || currentTrailType == TrailType.Trap )
+        {
+            if ( CircuitGrid.CircuitGridInstance.isValid(cell))
+            {
+                CircuitGrid.CircuitGridInstance.SetCircuit(cell, true);
+                Debug.Log("Writing circuit at cell " + cell);
+            }
+        }
 
         if (currentSegment.points.Count == 0 || (currentSegment.points[^1] - CurrentPosition).sqrMagnitude >= TrailPointDist
         * TrailPointDist)
@@ -73,6 +85,7 @@ public class PencilTrail : MonoBehaviour
         // {
         //     return;
         // }
+        
         for (int i = Segments.Count - 1; i >= 0; i--)
         {
             var segment = Segments[i];
@@ -88,8 +101,8 @@ public class PencilTrail : MonoBehaviour
                     {
                         Segments.Add(right);
                     }
-            
-                
+
+
                     break;
                 }
             }

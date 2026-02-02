@@ -1,11 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+
 public class TrailRegister : MonoBehaviour
 {
-   private readonly List<PencilTrail> trails = new();
-   public static TrailRegister TrailRegisterInstance { get; private set; }
-   void Awake()
+    private readonly List<PencilTrail> trails = new();
+    public static TrailRegister TrailRegisterInstance { get; private set; }
+    void Awake()
     {
         if (TrailRegisterInstance == null)
         {
@@ -16,19 +17,19 @@ public class TrailRegister : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }  
+    }
     public void Register(PencilTrail trail)
     {
-       if(!trails.Contains(trail))
-       {
-        trails.Add(trail);
-       }
+        if (!trails.Contains(trail))
+        {
+            trails.Add(trail);
+        }
     }
     public void Unregister(PencilTrail trail)
     {
-       
+
         trails.Remove(trail);
-       
+
     }
     public IReadOnlyList<PencilTrail> Trails => trails;
 }

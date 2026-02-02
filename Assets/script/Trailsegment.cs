@@ -1,6 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
-
+using System.Collections.Generic;
 public class TrailSegment : MonoBehaviour
 {
     public TrailType trailType;
@@ -9,9 +8,12 @@ public class TrailSegment : MonoBehaviour
 
     public bool EraseSegment(Vector3 erasePos, float eraseRadius, bool canErase, out TrailSegment left, out TrailSegment right)
     {
+        
         left = null;
         right = null;
         float r2 = eraseRadius * eraseRadius;
+
+
 
         if (trailType == TrailType.Circuit && !canErase)
         {
@@ -28,14 +30,15 @@ public class TrailSegment : MonoBehaviour
             }
         }
 
-        if (hitIndex == -1){
+        if (hitIndex == -1)
+        {
             return false;
         }
 
         int leftCount = hitIndex;
         int rightCount = points.Count - hitIndex - 1; // number of points to the right of the hit point
-        
-       
+
+
 
         if (leftCount >= 1)
         {
@@ -61,7 +64,7 @@ public class TrailSegment : MonoBehaviour
         float t = Vector3.Dot(ae, ab) / ab.sqrMagnitude;
         t = Mathf.Clamp01(t);
         Vector3 closestPoint = a + t * ab;
-        return (closestPoint - e).sqrMagnitude <= r2;   
+        return (closestPoint - e).sqrMagnitude <= r2;
     }
     public void Rebuild()
     {
