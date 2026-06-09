@@ -32,12 +32,4 @@ public class PencilMovement : MonoBehaviour
         acceleration * Time.fixedDeltaTime);// Smoothly adjust velocity, adding acceleration
 
     }
-    // void PaintCircuit(Vector3 worldPos)
-    // {
-    //     Vector2Int cell = CircuitGrid.CircuitGridInstance.WorldToCell(worldPos);
-    //     if (!CircuitGrid.CircuitGridInstance.isValid(cell))
-    //         return;
-
-    //     CircuitGrid.CircuitGridInstance.SetCircuit(cell, true);
-    // }
 }

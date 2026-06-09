@@ -11,16 +11,16 @@ public class MovementManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject); // dont destroy this object when loading new scenes
         }
         else
         {
             Destroy(gameObject);
         }
 
-        playerInputActions = new InputSystem_Actions();
+        playerInputActions = new InputSystem_Actions(); 
         playerInputActions.Player.Enable();
-        playerInputActions.Eraser.Enable();
+        playerInputActions.Eraser.Enable(); 
     }
     public Vector2 GetPencilMovement()
     {
@@ -29,10 +29,10 @@ public class MovementManager : MonoBehaviour
     }
     public Vector2 GetEraserMovement()
     {
-        Vector2 InputVector = playerInputActions.Eraser.Move.ReadValue<Vector2>();
-        return InputVector.normalized;
+        Vector2 InputVector = playerInputActions.Eraser.Move.ReadValue<Vector2>(); 
+        return InputVector.normalized; 
     }
-    public void OnDisable()
+    private void OnDisable() // Ensure to disable the input actions when the object is disabled
     {
         playerInputActions.Player.Disable();
         playerInputActions.Eraser.Disable();
