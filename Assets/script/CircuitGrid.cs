@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 
 using UnityEngine;
 
@@ -10,7 +11,7 @@ public class CircuitGrid : MonoBehaviour
     [SerializeField] private bool showgrid = true;
     [SerializeField] private Vector2 gridorigin = Vector2.zero;
 
-    private GridCell[,] cells;
+    private GridCell[,] cells; 
 
     void Awake()
     {
@@ -44,8 +45,10 @@ public class CircuitGrid : MonoBehaviour
     {
         int x = Mathf.FloorToInt((worldPos.x - gridorigin.x) / cellsize);
         int y = Mathf.FloorToInt((worldPos.y - gridorigin.y) / cellsize);
-        return new Vector2Int(x, y);
-    }
+        return new Vector2Int(x, y); // Convert world position to grid cell coordinates in int format
+    }/*this function converts a world position to grid cell coordinates by calculating the offset from the grid origin and 
+     dividing by the cell size, then flooring the result to get integer cell indices.
+    */
     public bool isValid(Vector2Int c)
     {
         return c.x >= 0 && c.y >= 0 && c.x < width && c.y < height;
@@ -87,6 +90,29 @@ public class CircuitGrid : MonoBehaviour
                     Gizmos.color = new Color(1f, 1f, 1f, 0.1f);
 
                 Gizmos.DrawWireCube(worldPos, Vector3.one * cellsize);
+            }
+        }
+    }
+    public GridCell GetCell(Vector2Int c)
+    {
+        if (!isValid(c))
+        {
+            return null;
+        }
+        else
+        {
+        return cells[c.x, c.y];
+        }
+    }
+    public IEnumerable<GridCell> AllCells() 
+    /* IEnumarable is used to create an iterator that allows you to loop 
+    through all the cells in the grid without needing to know the underlying data structure.*/
+    {
+        for (int x = 0; x<width; x++)
+        {
+            for (int y = 0; y<height; y++)
+            {
+                yield return cells[x, y];
             }
         }
     }
