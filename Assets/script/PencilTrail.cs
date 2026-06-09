@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class PencilTrail : MonoBehaviour
 {
-
-
-
     [SerializeField] private float TrailPointDist = 0.3f;
     [SerializeField] private int MaxTrailPoints = 100;
     [SerializeField] private Rigidbody2D Pencilrb;
@@ -18,7 +15,6 @@ public class PencilTrail : MonoBehaviour
     private List<TrailSegment> Segments = new List<TrailSegment>(); // creating a list of datatype TrailSegment to store trail segments
     private TrailSegment currentSegment;
     private Vector3 CurrentPosition;
-
 
 
     void Start()
@@ -52,25 +48,43 @@ public class PencilTrail : MonoBehaviour
         {
             NewSegment(currentTrailType);
         }
-        Vector2Int cell = CircuitGrid.CircuitGridInstance.WorldToCell(CurrentPosition);
-        if(currentTrailType == TrailType.Circuit || currentTrailType == TrailType.Trap )
+        var grid = CircuitGrid.CircuitGridInstance;
+        if (grid == null) return;
+        Vector2Int cell = grid.WorldToCell(CurrentPosition);
+
+        if(currentTrailType == TrailType.Circuit)
         {
-            if ( CircuitGrid.CircuitGridInstance.isValid(cell))
+            if ( grid.isValid(cell))
             {
-                CircuitGrid.CircuitGridInstance.SetCircuit(cell, true);
+                grid.SetCircuit(cell, true);
                 Debug.Log("Writing circuit at cell " + cell);
+                
             }
+        }
+        
+        if ( currentTrailType == TrailType.Trap)
+        {
+            TrapSystem.instance.PlaceTrap(cell, 5f);
         }
 
         if (currentSegment.points.Count == 0 || (currentSegment.points[^1] - CurrentPosition).sqrMagnitude >= TrailPointDist
         * TrailPointDist)
         {
 
-
             currentSegment.points.Add(CurrentPosition);
 
             if (currentSegment.points.Count > MaxTrailPoints)
-            {
+
+            { 
+                Vector2 firstPoint = currentSegment.points[0];
+                if(currentSegment.trailType == TrailType.Circuit)
+                {
+                    Vector2Int firstcell = grid.WorldToCell(firstPoint);
+                    if(grid.isValid(firstcell))
+                    {
+                        grid.SetCircuit(firstcell, false);
+                    }
+                }
                 currentSegment.points.RemoveAt(0);
             }
 
@@ -80,12 +94,7 @@ public class PencilTrail : MonoBehaviour
 
     }
     public void EraseTrail(Vector3 ErasePos, float EraseRadius, bool canErase)
-    {
-        // if (currentSegment == null || currentSegment.points.Count == 0)
-        // {
-        //     return;
-        // }
-        
+    {        
         for (int i = Segments.Count - 1; i >= 0; i--)
         {
             var segment = Segments[i];
@@ -133,6 +142,11 @@ public class PencilTrail : MonoBehaviour
         currentSegment.lineRenderer.startColor = color;
         currentSegment.lineRenderer.endColor = color;
         Segments.Add(currentSegment);
+
+        if (trailType == TrailType.Trap)
+        {
+            currentSegment.ActiveTrapTimer();
+        }
     }
 
 }
@@ -142,7 +156,7 @@ public enum TrailType
     Circuit,
     Trap
 }
-[System.Serializable]
+[System.Serializable] 
 public struct TrailPoint
 {
     public Vector3 position;
