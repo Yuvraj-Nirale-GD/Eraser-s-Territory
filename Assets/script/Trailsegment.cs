@@ -1,11 +1,31 @@
 using UnityEngine;
 using System.Collections.Generic;
+
 public class TrailSegment : MonoBehaviour
 {
     public TrailType trailType;
     public LineRenderer lineRenderer;
-    public List<Vector3> points = new List<Vector3>();
+    public List<Vector3> points = new List<Vector3>();  
+    private bool isTrap = false;
+    private float trapDuration = 5f; // Duration for which the trap is active                                                                                      
+    
 
+
+    public void Update()
+    {
+        if (isTrap)
+        {
+            trapDuration -= Time.deltaTime;
+            if (trapDuration <= 0f)
+            {
+                points.Clear();   
+                Rebuild();        // tell LineRenderer points are gone
+                Destroy(gameObject); //
+                // Destroy the trap segment after the duration expires
+            }
+        }
+    }
+  
     public bool EraseSegment(Vector3 erasePos, float eraseRadius, bool canErase, out TrailSegment left, out TrailSegment right)
     {
         
@@ -53,6 +73,7 @@ public class TrailSegment : MonoBehaviour
             right = Instantiate(this, transform.parent);
             right.points = RightPoints;
             right.Rebuild();
+
         }
         Destroy(gameObject);
         return true;
@@ -70,5 +91,11 @@ public class TrailSegment : MonoBehaviour
     {
         lineRenderer.positionCount = points.Count;
         lineRenderer.SetPositions(points.ToArray());
+        
+    }
+    public void ActiveTrapTimer()
+    {
+        isTrap = true;
+
     }
 }

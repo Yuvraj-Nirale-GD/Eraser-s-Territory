@@ -30,6 +30,20 @@ public class Eraser : MonoBehaviour
     void FixedUpdate()
     {
         Vector2 targetvelocity = eraserMovementVector * MoveSpeed;
+        Vector2 nextPos = Eraserrb.position + targetvelocity * Time.fixedDeltaTime;
+        var grid = CircuitGrid.CircuitGridInstance;
+        if ( grid != null)
+        {
+            Vector2Int nextCell = grid.WorldToCell(nextPos);
+            if( grid.isValid(nextCell))
+            {
+                var cell = grid.GetCell(nextCell);
+                if ( cell != null && cell.hasTrap  )
+                {
+                    return;
+                }
+            }
+        }
         Eraserrb.linearVelocity = Vector2.MoveTowards(Eraserrb.linearVelocity,
         targetvelocity,
         acceleration * Time.fixedDeltaTime);
