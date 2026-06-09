@@ -120,7 +120,7 @@ This is an **active prototype**.
 ## Gameplay Demo
 
 # 1.
--- ![Gameplay demo](Assets\demo/demo.gif)
+-- ![Gameplay demo](Assets/demo/demo.gif)
 
 
 ## 📂 Notes
