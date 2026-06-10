@@ -64,7 +64,9 @@ public class PencilTrail : MonoBehaviour
         
         if ( currentTrailType == TrailType.Trap)
         {
+            Debug.Log("placing trap at cell " + cell);
             TrapSystem.instance.PlaceTrap(cell, 5f);
+            
         }
 
         if (currentSegment.points.Count == 0 || (currentSegment.points[^1] - CurrentPosition).sqrMagnitude >= TrailPointDist
@@ -110,8 +112,6 @@ public class PencilTrail : MonoBehaviour
                     {
                         Segments.Add(right);
                     }
-
-
                     break;
                 }
             }

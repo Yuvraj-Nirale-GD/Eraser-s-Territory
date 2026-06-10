@@ -7,7 +7,7 @@ public class CircuitGrid : MonoBehaviour
     public static CircuitGrid CircuitGridInstance { get; private set; }
     [SerializeField] private int width = 100;
     [SerializeField] private int height = 100;
-    [SerializeField] private float cellsize = 0.4f;
+    [SerializeField] public float cellsize = 0.4f;
     [SerializeField] private bool showgrid = true;
     [SerializeField] private Vector2 gridorigin = Vector2.zero;
 
@@ -49,6 +49,14 @@ public class CircuitGrid : MonoBehaviour
     }/*this function converts a world position to grid cell coordinates by calculating the offset from the grid origin and 
      dividing by the cell size, then flooring the result to get integer cell indices.
     */
+
+    public Vector3 CellToWorld(Vector2Int c)
+    {
+        float x = Mathf.FloorToInt(gridorigin.x + (c.x + 0.5f) * cellsize);
+        float y = Mathf.FloorToInt(gridorigin.y + (c.y + 0.5f) * cellsize);
+        return new Vector3(x, y,0f);
+
+    }
     public bool isValid(Vector2Int c)
     {
         return c.x >= 0 && c.y >= 0 && c.x < width && c.y < height;
@@ -63,6 +71,7 @@ public class CircuitGrid : MonoBehaviour
         {
             return false;
         }
+
 
         return cells[c.x, c.y].hasCircuit;
     }
@@ -84,8 +93,13 @@ public class CircuitGrid : MonoBehaviour
                     0f
                     );
 
-                if (cells[x, y].hasCircuit)
+                if (cells[x, y].hasCircuit){
                     Gizmos.color = Color.red;
+                    }
+                else if (cells[x, y].hasTrap)
+                {
+                    Gizmos.color = Color.orangeRed;
+                }
                 else
                     Gizmos.color = new Color(1f, 1f, 1f, 0.1f);
 

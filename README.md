@@ -35,7 +35,7 @@ This project explores gameplay systems such as movement, interaction, and basic 
 - **Language:** C#
 - **Input:** Unity Input System
 - **Rendering:** LineRenderer
-- **Architecture F**
+- **Architecture**
 - Git \& GitHub for version control
 
 ---
@@ -140,7 +140,7 @@ This project is currently in active development and is intended as a gameplay me
 ## 🧠 Author
 
 Built by **Yuvraj Nirale**  
-Focused on learning **real gameplay systems**, not tutorials.
+Focused on learning **real gameplay systems**
 
 
 

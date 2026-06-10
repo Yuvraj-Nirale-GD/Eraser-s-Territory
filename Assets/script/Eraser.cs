@@ -22,9 +22,9 @@ public class Eraser : MonoBehaviour
         if (eraseTimer <= 0f && Eraserrb.linearVelocity.sqrMagnitude > 0.01f)
         {
             EraseTrail();
-            DefuseCell();
             eraseTimer = eraseInterval;
         }
+            DefuseCell();
 
     }
     void FixedUpdate()
@@ -32,13 +32,13 @@ public class Eraser : MonoBehaviour
         Vector2 targetvelocity = eraserMovementVector * MoveSpeed;
         Vector2 nextPos = Eraserrb.position + targetvelocity * Time.fixedDeltaTime;
         var grid = CircuitGrid.CircuitGridInstance;
-        if ( grid != null)
+        if (grid != null)
         {
             Vector2Int nextCell = grid.WorldToCell(nextPos);
-            if( grid.isValid(nextCell))
+            if (grid.isValid(nextCell))
             {
                 var cell = grid.GetCell(nextCell);
-                if ( cell != null && cell.hasTrap  )
+                if (cell != null && cell.hasTrap)
                 {
                     return;
                 }
@@ -73,26 +73,36 @@ public class Eraser : MonoBehaviour
     void DefuseCell()
     {
         var grid = CircuitGrid.CircuitGridInstance;
-        if ( grid == null)
+        if (grid == null)
         {
             return;
         }
-
-        Vector2Int cell = grid.WorldToCell(transform.position);
+        int gridRadius = Mathf.CeilToInt(eraseRadius / grid.cellsize);
         
-        if ( grid.isValid(cell))
-        {
-           if(grid.HasCircuit(cell)) 
-           {
-            grid.SetCircuit(cell, false);
-           Debug.Log("Defusing circuit at " + cell);
-           }
-           else
-            {
-                Debug.Log("No circuit at " + cell);
-            }
-
+        Vector2Int Centercell = grid.WorldToCell(transform.position);
+        if (! (PencilCapture > 0)) {
+            return;
         }
-    
+        else{
+            for (int x = -gridRadius; x <= gridRadius; x++)
+            {
+                for (int y = -gridRadius; y <= gridRadius; y++)
+                {
+                    Vector2Int cell = new Vector2Int(Centercell.x + x, Centercell.y + y);
+                    if (!grid.isValid(cell)) continue;
+                    if (!grid.HasCircuit(cell)) continue;
+                    {
+                        Vector2 cellWorldPos = grid.CellToWorld(cell);
+                        if (Vector2.Distance(transform.position, cellWorldPos) <= eraseRadius)
+                        {
+                            grid.SetCircuit(cell, false);
+                            Debug.Log("Defusing circuit at " + cell);
+                        }
+
+                    }
+                }
+
+            }
+        }
     }
 }

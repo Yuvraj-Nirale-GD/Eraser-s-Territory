@@ -34,6 +34,11 @@ public class TrapSystem : MonoBehaviour
         var c = grid.GetCell(cell);
         c.hasTrap = true;
         c.trapTimer = duration;
+        if(c.hasTrap)
+        {
+            Debug.Log("Trap placed at cell " + cell + " for duration " + duration);
+        }
+        
 
     }
 }
